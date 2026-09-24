@@ -1,0 +1,24 @@
+name: Analyse statique Java
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  sast:
+    name: Analyse SAST avec Semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Analyser les sources Java
+        run: semgrep scan --config auto --error src/main/java
